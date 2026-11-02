@@ -1,0 +1,41 @@
+//udpServerEO.java
+//2A - A client server-based program using UDP to find if the number entered is even or odd.
+import java.io.*;
+import java.net.*;
+
+public class udpServerEO {
+    public static void main(String args[]) {
+        try {
+            DatagramSocket ds = new DatagramSocket(2000);
+
+            byte b[] = new byte[1024];
+
+            DatagramPacket dp = new DatagramPacket(b, b.length);
+
+            ds.receive(dp);
+
+            String str = new String(dp.getData(), 0, dp.getLength());
+
+            System.out.println(str);
+
+            int a = Integer.parseInt(str);
+            String s;
+
+            if (a % 2 == 0)
+                s = "Number is even";
+            else
+                s = "Number is odd";
+
+            byte b1[] = s.getBytes();
+
+            DatagramPacket dp1 = new DatagramPacket(b1, b1.length,dp.getAddress(), dp.getPort());
+
+            ds.send(dp1);
+
+            ds.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
